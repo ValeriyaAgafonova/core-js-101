@@ -77,16 +77,23 @@ function isLeapYear(date) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,10,0,0,250)     => "00:00:00.250"
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
-function timeSpanToString(/* startDate, endDate */) {
-  // const date = new Date(endDate - startDate);
-  // let h = date.getHours();
-  // let s = date.getSeconds();
-  // let ms = date.getMilliseconds();
-  // h = (h < 10) ? `0${h}` : h;
-  // s = (s < 10) ? `0${s}` : s;
-  // ms = (ms < 10) ? `00${ms}` : `0${ms}`;
-  // return `${[h, s].join(':')}.${ms}`;
-  throw new Error('Not implemented');
+function timeSpanToString(startDate, endDate) {
+  const [hoursDiff, minutesDiff, secondsDiff] = [
+    (date) => date.getHours(),
+    (date) => date.getMinutes(),
+    (date) => date.getSeconds(),
+  ].map((getValue) => (getValue(endDate) - getValue(startDate)).toLocaleString('en-US', {
+    minimumIntegerDigits: 2,
+    useGrouping: false,
+  }));
+
+  const millisecondsDiff = (endDate.getMilliseconds() - startDate.getMilliseconds()).toLocaleString('en-US', {
+    minimumIntegerDigits: 3,
+    useGrouping: false,
+  });
+
+  return `${hoursDiff}:${minutesDiff}:${secondsDiff}.${millisecondsDiff}`;
+  // throw new Error('Not implemented');
 }
 
 

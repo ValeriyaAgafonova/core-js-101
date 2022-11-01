@@ -237,8 +237,9 @@ function toArrayOfSquares(arr) {
 function getMovingSum(arr) {
   const res = [];
   arr.reduce((acc, val) => {
-    res.push(acc + val);
-    return acc;
+    const x = acc + val;
+    res.push(x);
+    return acc + val;
   }, 0);
   return res;
 }
@@ -429,9 +430,9 @@ function toStringList(arr) {
  *      { country: 'Russia',  city: 'Saint Petersburg' }
  *    ]
  */
-function sortCitiesArray(/* arr */) {
-  // return arr.sort((a, b) => a.country - b.country);
-  throw new Error('Not implemented');
+function sortCitiesArray(arr) {
+  return arr.sort((a, b) => a.country.localeCompare(b.country) || a.city.localeCompare(b.city));
+  // throw new Error('Not implemented');
 }
 
 /**
@@ -452,7 +453,7 @@ function sortCitiesArray(/* arr */) {
  *           [0,0,0,1,0],
  *           [0,0,0,0,1]]
  */
-function getIdentityMatrix(/* n */) {
+function getIdentityMatrix(n) {
   // const matrix = [];
   // for (let i = 0; i < n; i += 1) {
   //   matrix[i] = [];
@@ -462,7 +463,13 @@ function getIdentityMatrix(/* n */) {
   //   }
   // }
   // return matrix;
-  throw new Error('Not implemented');
+  // throw new Error('Not implemented');
+  return new Array(n).fill().map((_, ind) => {
+    const arr = new Array(n).fill(0);
+    arr[ind] = 1;
+
+    return arr;
+  });
 }
 
 /**
@@ -478,13 +485,8 @@ function getIdentityMatrix(/* n */) {
  *     0, 100 => [ 0, 1, 2, ..., 100 ]
  *     3, 3   => [ 3 ]
  */
-function getIntervalArray(/* start, end */) {
-  // const result = [];
-  // for (let i = start; i <= end; i += 1) {
-  //   result.push(i);
-  // }
-  // return result;
-  throw new Error('Not implemented');
+function getIntervalArray(start, end) {
+  return Array.from({ length: (end - start) / 1 + 1 }, (_, i) => start + (i * 1));
 }
 
 /**
@@ -532,9 +534,20 @@ function distinct(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  // return new Map(array.map(keySelector));
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  const dict = array.reduce((accumulator, curVal) => {
+    const res = accumulator;
+
+    res[keySelector(curVal)] = [
+      ...(res[keySelector(curVal)] || []),
+      valueSelector(curVal),
+    ];
+
+    return res;
+  }, {});
+
+  return new Map(Object.entries(dict));
+  // throw new Error('Not implemented');
 }
 
 
@@ -568,8 +581,8 @@ function selectMany(arr, childrenSelector) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  return indexes.reduce((acc, index) => acc[index], arr);
 }
 
 
